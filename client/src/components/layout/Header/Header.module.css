@@ -1,0 +1,67 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.authButton {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.authButton:hover {
+   background: #000;
+   color: #f0f0f0;
+}
+
+.logo {
+  height: 54px;
+}
+
+.profileName {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c2c2c;
+  letter-spacing: -0.3px;
+}
+
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #444;
+  line-height: 0; 
+}
+
+.iconButton svg {
+  width: 35px;
+  height: 35px;
+  display: block;
+
+}
+.iconButton:hover {
+  background: rgba(0, 0, 0, 0.05);
+}

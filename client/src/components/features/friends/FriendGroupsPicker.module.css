@@ -1,0 +1,135 @@
+.wrapper {
+    position: relative;
+    margin-top: 10px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    height: 26px;
+
+    padding: 0 10px;
+
+    border-radius: 999px;
+
+    display: flex;
+    align-items: center;
+
+    font-size: 12px;
+}
+
+.addButton {
+    width: 26px;
+    height: 26px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background: #111;
+    color: white;
+
+    cursor: pointer;
+}
+
+.dropdown {
+    position: absolute;
+
+    top: 38px;
+    left: 0;
+
+    width: 220px;
+
+    padding: 10px;
+
+    border-radius: 16px;
+
+    background: white;
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.12);
+
+    z-index: 20;
+}
+
+.option {
+    box-sizing: border-box;
+    width: 100%;
+
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: none;
+    background: transparent;
+
+    border-radius: 10px;
+
+    padding: 0 10px;
+
+    cursor: pointer;
+}
+
+
+.color {
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    margin-right: 8px;
+}
+
+.newGroupButton {
+    margin-top: 10px;
+
+    width: 100%;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #f5f5f5;
+
+    cursor: pointer;
+}
+
+.createBox {
+    margin-top: 10px;
+}
+
+.createBox input {
+    width: 100%;
+    height: 36px;
+
+    border-radius: 10px;
+    border: 1px solid #ddd;
+
+    padding: 0 12px;
+
+    outline: none;
+}
+
+.colors {
+    display: flex;
+    gap: 8px;
+
+    margin-top: 10px;
+}
+
+.colorPick {
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+    border: none;
+
+    cursor: pointer;
+}

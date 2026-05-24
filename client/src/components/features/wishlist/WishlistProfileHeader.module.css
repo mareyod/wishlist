@@ -1,0 +1,74 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
+.nickname {
+    font-size: 28px;
+    font-weight: 700;
+    color: #273239;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+}
+
+.primaryButton {
+    height: 44px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 12px;
+    background: #e39a9d;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.secondaryButton {
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 12px;
+    border: 1px solid #d0d0d0;
+    background: white;
+    cursor: pointer;
+}
+
+.loader {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

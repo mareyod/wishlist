@@ -1,0 +1,191 @@
+.bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: scroll;
+    padding: 12px 20px;
+}
+
+.bar::-webkit-scrollbar {
+    display: none;
+}
+
+.groupItem {
+    display: flex;
+    align-items: center;
+}
+
+.groupWrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+.groupButton,
+.activeGroup {
+    height: 40px;
+
+    padding: 0 16px;
+
+    border: none;
+
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.groupButton:hover,
+.activeGroup:hover {
+    transform: scale(1.04);
+}
+
+.groupButton:active,
+.activeGroup:active {
+    transform: scale(0.98);
+}
+
+.groupButton {
+    background: #f3f3f3;
+}
+
+.activeGroup {
+    background: #111;
+    color: white;
+}
+
+
+.addButton {
+    width: 40px;
+    height: 40px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #111;
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.addButton:hover {
+    transform: scale(1.05);
+}
+
+.addButton:active {
+    transform: scale(0.95);
+}
+
+
+
+
+
+.groupWrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+
+.groupActions {
+    position: absolute;
+
+    top: -8px;
+    right: -8px;
+
+    display: flex;
+    gap: 4px;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transform: translateY(4px);
+
+    transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
+}
+
+.groupWrapper:hover .groupActions {
+    opacity: 1;
+    pointer-events: auto;
+
+    transform: translateY(0);
+}
+
+
+.editButton {
+    width: 20px;
+    height: 20px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: white;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.15);
+
+    transition:
+        transform 0.15s ease;
+}
+
+.editButton:hover {
+    transform: scale(1.08);
+}
+
+
+.deleteButton {
+    width: 20px;
+    height: 20px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #ff3b30;
+    color: white;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.15);
+
+    transition:
+        transform 0.15s ease;
+}
+
+.deleteButton:hover {
+    transform: scale(1.08);
+}
