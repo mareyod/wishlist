@@ -28,7 +28,7 @@
     justify-content: center;
     background:rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(2px);
-    border-radius: 0 0 0 0;
+    border-radius: 18px;
     pointer-events: none;
 }
 
@@ -154,11 +154,11 @@
     opacity: 1;
 }
 
-.optionsButton:hover {
-    background:
-        rgba(0, 0, 0, 0.8);
+@media (max-width: 768px) {
+    .optionsButton {
+        opacity: 1;
+    }
 }
-
 
 .dropdown {
     position: absolute;

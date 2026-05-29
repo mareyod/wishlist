@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react'
+
 import FriendCard from './FriendCard'
 import EmptyState from '../shared/EmptyState'
 
@@ -13,6 +15,8 @@ export default function FriendsSection({
     onRemoveGroup,
     children
 }) {
+    const [openPickerId, setOpenPickerId] = useState(null)
+
     const hasItems = items?.length > 0
     const canRemove = type === 'outcoming'
     const canEditGroups = type === 'incoming'
@@ -26,6 +30,18 @@ export default function FriendsSection({
             description: 'Вы пока ни на кого не подписаны'
         }
     }
+
+    useEffect(() => {
+        const handleClickOutside = () => {
+            setOpenPickerId(null)
+        }
+
+        document.addEventListener('click', handleClickOutside)
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside)
+        }
+    }, [])
 
 
     return (
@@ -53,6 +69,8 @@ export default function FriendsSection({
                             groups={canEditGroups ? groups : undefined}
                             onAddGroup={canEditGroups ? onAddGroup : undefined}
                             onRemoveGroup={canEditGroups ? onRemoveGroup : undefined}
+                            openPickerId={openPickerId}
+                            setOpenPickerId={setOpenPickerId}
                         />
                     )
                 })}

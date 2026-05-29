@@ -86,6 +86,19 @@ class UserController{
         }
     }
 
+    async changeAvatar(req, res, next) {
+    try {
+        const userId = req.user.id;
+        const file = req.file;
+
+        const data = await userService.changeAvatar(userId, file);
+
+        return res.json(data);
+    } catch (e) {
+        next(e);
+    }
+}
+
 }
 
 module.exports = new UserController()

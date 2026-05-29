@@ -4,7 +4,8 @@ import {
     logout as logoutApi, 
     login as loginApi, 
     registration as registrationApi, 
-    uploadAvatar as uploadAvatarApi 
+    uploadAvatar as uploadAvatarApi,
+    changeAvatar as changeAvatarApi 
 } from "../../api/authApi";
 import { setAccessToken, getAccessToken } from '../../api/apiClient'
 
@@ -84,6 +85,8 @@ export function AuthProvider({ children }){
             register,
             logout,
             refresh,
+            uploadAvatarApi,
+            changeAvatarApi
         }}
         >
         {children}

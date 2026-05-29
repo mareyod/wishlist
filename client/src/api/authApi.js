@@ -1,4 +1,4 @@
-import { setAccessToken, handleResponse } from './apiClient'
+import { setAccessToken, getAccessToken, handleResponse } from './apiClient'
 
 const BASE_URL = import.meta.env.VITE_API_URL+"/api/auth";
 
@@ -57,5 +57,23 @@ export const uploadAvatar = async (file) => {
   })
 
   return handleResponse(res, 'Ошибка загрузки изображения')
+}
+
+export const changeAvatar = async (file) => {
+  const token = getAccessToken()
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(BASE_URL+'/changeAvatar', {
+    method: 'POST',
+    headers: {
+        Authorization: token ? `Bearer ${token}` : undefined
+    },
+    credentials: 'include',
+    body: formData
+  });
+
+  return handleResponse(res, 'Ошибка загрузки изображения')
+
 }
 

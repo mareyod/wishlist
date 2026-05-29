@@ -2,18 +2,19 @@ import { useState, useEffect, useCallback } from 'react'
 
 import { createGroup, deleteGroup, getGroups, updateGroup } from '../api/groupsApi'
 
-export default function useGroups() {
+export default function useGroups(enabled = true) {
 
     const [groups, setGroups] = useState([])
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     const [error, setError] = useState(null)
 
     const [selectedGroupId, setSelectedGroupId] = useState(null)
 
     const refreshGroups = useCallback(async () => {
-        try {
+	if (!enabled) return
+        try {	
             setLoading(true)
             const data = await getGroups()
             setGroups(data)
@@ -23,7 +24,7 @@ export default function useGroups() {
         } finally {
             setLoading(false)
         }
-    }, [])
+    }, [enabled])
 
     useEffect(() => {
         refreshGroups()

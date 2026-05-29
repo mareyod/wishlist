@@ -34,7 +34,6 @@ class FriendshipModel {
         }
 
         const groups = await this.getFriendGroups(friendship.id)
-
         return {
             role: 'friend',
             groupIds: groups.map(g => g.friendship_group_id),
@@ -160,7 +159,28 @@ class FriendshipModel {
         return res.rows[0]
     }
 
-    
+    async getFriendGroups(friendshipId) {
+
+    const res = await db.query(
+        `
+        SELECT
+            fg.id as friendship_group_id,
+            fg.name,
+            fg.color
+
+        FROM friendship_groups fg
+
+        JOIN friendship_group_members fgm
+            ON fg.id = fgm.friendship_group_id
+        WHERE fgm.friendship_id = $1
+
+        ORDER BY fg.name
+        `,
+        [friendshipId]
+    )
+
+    return res.rows
 }
 
+}
 module.exports = new FriendshipModel()

@@ -59,6 +59,18 @@ class UserModel {
         return user.rows[0]
     }
 
+    async updateAvatar(userId, avatar_url) {
+        const user = await db.query(
+            `UPDATE users
+            SET avatar_url = $1
+            WHERE id = $2
+            RETURNING *`,
+            [avatar_url, userId]
+        );
+
+        return user.rows[0];
+    }
+
 }
 
 module.exports = new UserModel()

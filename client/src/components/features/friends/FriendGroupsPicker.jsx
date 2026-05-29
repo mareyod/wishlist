@@ -5,16 +5,15 @@ export default function FriendGroupsPicker({
     friend, 
     groups, 
     onAddGroup, 
-    onRemoveGroup
+    onRemoveGroup,
+    open,
+    onToggleOpen
 }) {
-
-    const [open, setOpen] = useState(false)
     
     const friendGroups = friend.groups
     const friendGroupIds = friendGroups.map(group => Number(group.id))
 
     const handleToggle = (group) => {
-
         const id = Number(group.id)
         const hasGroup = friendGroupIds.includes(id)
 
@@ -23,6 +22,16 @@ export default function FriendGroupsPicker({
         } else {
             onAddGroup(friend.id, group)
         }
+
+    }
+
+    const handleToggleOpen = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        onToggleOpen(prev =>
+            prev === friend.id ? null : friend.id
+        )
     }
 
     return (
@@ -40,10 +49,7 @@ export default function FriendGroupsPicker({
 
                     <button
                         className={styles.addButton}
-                        onClick={(e) => {
-                            e.preventDefault()
-                            setOpen(prev => !prev)
-                        }}
+                        onClick={handleToggleOpen}
                     >
                         ✎
                     </button>
@@ -52,7 +58,6 @@ export default function FriendGroupsPicker({
                 <div 
                     className={styles.dropdown} 
                     onClick={(e) => { 
-                        e.preventDefault();
                         e.stopPropagation()
                     }}>
                     {groups.map(group => {

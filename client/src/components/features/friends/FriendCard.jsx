@@ -9,7 +9,9 @@ export default function FriendCard({
     onRemove,
     groups,
     onAddGroup,
-    onRemoveGroup
+    onRemoveGroup,
+    openPickerId,
+    setOpenPickerId
 }) {
 
     const canEditGroups = type === 'incoming' && groups
@@ -33,21 +35,20 @@ export default function FriendCard({
                         }
                     />
 
-                    <div>
+                    <div className={styles.info}>
 
                         <div className={styles.nickname}>
                             {friend.nickname}
                         </div>
 
-                        <div className={styles.status}>
-                            @{friend.nickname}
-                        </div>
                         {canEditGroups && (
                             <FriendGroupsPicker
                                 friend={friend}
                                 groups={groups}
                                 onAddGroup={onAddGroup}
                                 onRemoveGroup={onRemoveGroup}
+                                open={openPickerId === friend.id}
+                                onToggleOpen={setOpenPickerId}
                             />
                         )}
                     </div>

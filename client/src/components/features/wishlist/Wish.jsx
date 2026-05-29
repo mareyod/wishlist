@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import styles from './Wish.module.css'
 
@@ -16,7 +16,6 @@ export default function Wish({
     onUnreserve
 
 }) {
-    const [hovered, setHovered] =  useState(false)
     const [menuOpen, setMenuOpen] =  useState(false)
 
     const isOwner =  viewer?.role === 'owner'
@@ -28,19 +27,37 @@ export default function Wish({
     const showGroups = isOwner
     const isReserved = wish.is_reserved
     const reservedByMe = wish.is_reserved_by_me
+    const menuRef = useRef(null)
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(event.target)
+            ) {
+                setMenuOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        document.addEventListener('touchstart', handleClickOutside)
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+            document.removeEventListener('touchstart', handleClickOutside)
+        }
+    }, [])
 
     return (
         <div
             className={styles.card}
             onClick={onClick}
-            onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => {
-                setHovered(false)
                 setMenuOpen(false)
             }}
         >
-            {canEdit && hovered && (
-                <div className={styles.options}>
+            {canEdit && (
+                <div className={styles.options} ref={menuRef}>
                     <button
                         className={ styles.optionsButton }
                         onClick={(e) => {

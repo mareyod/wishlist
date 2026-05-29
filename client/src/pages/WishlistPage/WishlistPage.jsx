@@ -19,7 +19,6 @@ export default function WishlistPage() {
     const { nickname } = useParams()
     const { openModal } = useModal()
     const { user } = useAuth()
-
     const {
         wishlist,
         loading: wishlistLoading,
@@ -32,18 +31,17 @@ export default function WishlistPage() {
         handleUnreserve
 
     } = useWishlist(nickname, user?.id)
-
-    const {
-        groups,
-        loading: groupsLoading,
-        error: groupsError,
-        selectedGroupId,
-        setSelectedGroupId,
-        handleCreateGroup,
-        handleDeleteGroup,
-        handleEditGroup
-
-    } = useGroups()
+    const isOwner = wishlist?.viewer?.role === 'owner'
+const {
+    groups,
+    loading: groupsLoading,
+    error: groupsError,
+    selectedGroupId,
+    setSelectedGroupId,
+    handleCreateGroup,
+    handleDeleteGroup,
+    handleEditGroup
+} = useGroups(isOwner)
 
     const {
         follow,
@@ -95,10 +93,9 @@ export default function WishlistPage() {
     }, [items, selectedGroupId])
 
 
-
     return (
         <PageState
-            loading={groupsLoading || wishlistLoading}
+            loading={(isOwner && groupsLoading) || wishlistLoading}
             error={wishlistError || groupsError}
             isEmpty={!wishlist}
             emptyText="Wishlist не найден"

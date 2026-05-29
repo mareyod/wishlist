@@ -22,6 +22,13 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    min-width: 0;
+    flex: 1;
+}
+
+.info {
+    min-width: 0;
+    flex: 1;
 }
 
 .avatar {
@@ -61,6 +68,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-shrink: 0;
 }
 
 .removeButton:hover {
@@ -72,4 +80,31 @@
 
 .removeButton:active {
     transform: translateY(0);
+}
+
+
+@media (max-width: 768px) {
+  .card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .nickname {
+    font-size: 15px;
+  }
+
+  .removeButton {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .card:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }

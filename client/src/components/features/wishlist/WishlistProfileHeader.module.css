@@ -15,10 +15,11 @@
 }
 
 .avatar {
-    width: 84px;
-    height: 84px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
 }
 
 .info {
@@ -70,5 +71,21 @@
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .avatar {
+        width: 110px;
+        height: 110px;
+    }
+
+    .nickname {
+        font-size: 22px;
+    }
+
+    .header {
+        gap: 16px;
+        margin-bottom: 20px;
     }
 }

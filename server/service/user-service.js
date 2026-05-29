@@ -113,6 +113,23 @@ class UserService {
 
         return new UserDto(user)
     }
+
+    async changeAvatar(userId, file) {
+        if (!file) {
+            throw ApiError.BadRequest('Файл не загружен');
+        }
+
+        const avatar_url = `/uploads/avatars/${file.filename}`;
+
+        const user = await UserModel.updateAvatar(userId, avatar_url);
+
+        const userDto = new UserDto(user);
+
+        return {
+            user: userDto,
+            avatar_url
+        };
+    }
 }
 
 module.exports = new UserService()

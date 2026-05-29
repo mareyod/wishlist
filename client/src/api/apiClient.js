@@ -9,13 +9,19 @@ export const getAccessToken = () => {
 }
 
 export const handleResponse = async (res, errorMessage) => {
-  const data = await res.json()
+  const text = await res.text();
 
-  if (!res.ok) {
-    throw new Error(
-      data?.message || errorMessage
-    )
+  let data = null;
+
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (e) {
+    throw new Error(errorMessage);
   }
 
-  return data
-}
+  if (!res.ok) {
+    throw new Error(data?.message || errorMessage);
+  }
+
+  return data;
+};

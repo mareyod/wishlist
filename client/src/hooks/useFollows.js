@@ -45,7 +45,7 @@ export default function useFollows() {
     }
 
     const addGroup = useCallback(async (friendId, group) => {
-
+        
         updateFriend(setFollowers, friendId, (friend) => {
             const hasGroup = friend.groups?.some(g => g.id === group.id)
 
@@ -69,7 +69,7 @@ export default function useFollows() {
 
         updateFriend(setFollowers, friendId, (friend) => ({
             ...friend,
-            groups: friend.groups.filter(g => g.id !== group.id)
+            groups: friend.groups.filter(g => Number(g.id) !== Number(group.id))
         }))
 
         try {

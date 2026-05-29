@@ -7,7 +7,7 @@ import { useModal } from "../../../hooks/useModal";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function RegisterForm() {
-  const { register } = useAuth();
+  const { register, uploadAvatarApi } = useAuth();
   const { closeModal, openModal } = useModal();
 
   const fileInputRef = useRef(null);
@@ -105,8 +105,20 @@ export default function RegisterForm() {
 
     try {
       setLoading(true);
+      
+      let avatar_url = null;
 
-      await register(form);
+      if (form.avatar_file) {
+        const res = await uploadAvatarApi(form.avatar_file);
+        avatar_url = res.path;
+      }
+
+      await register({
+        email: form.email,
+        password: form.password,
+        nickname: form.nickname,
+        avatar_url,
+      });
 
       closeModal();
     } catch (e) {

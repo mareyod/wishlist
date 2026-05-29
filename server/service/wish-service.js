@@ -9,6 +9,7 @@ const UserDto = require('../dtos/user-dto')
 
 class WishService {
     sanitizeWishlistItems(items, viewerContext) {
+
         return items.map(item => {
 
             const sanitizedItem = {...item}

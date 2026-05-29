@@ -2,6 +2,11 @@
   margin: 0;
   font-family: Arial, sans-serif;
 }
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
 body {
   background: #fff;
