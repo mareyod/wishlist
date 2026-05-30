@@ -43,7 +43,7 @@ export default function GroupsBar({
     }
 
     const isSelected = (groupId) => {
-        return selected?.includes(groupId)
+        return selected === groupId
     }
 
 

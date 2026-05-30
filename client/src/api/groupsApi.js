@@ -1,4 +1,4 @@
-import { getAccessToken, handleResponse  } from './apiClient'
+import { getAccessToken, handleResponse } from './apiClient'
 
 const BASE_URL = import.meta.env.VITE_API_URL + '/api/groups'
 
