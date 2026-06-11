@@ -67,6 +67,25 @@
     display: inline-block;
     animation: spin .7s linear infinite;
 }
+.avatarWrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+.avatarLoadingOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%; /* если аватар круглый */
+}
+.avatarError {
+    color: #e03131;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
 
 @keyframes spin {
     to {

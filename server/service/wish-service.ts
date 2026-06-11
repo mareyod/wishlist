@@ -169,7 +169,7 @@ class WishService {
         return updatedWish
     }
 
-    async deleteWish(wishId: number, ownerId: number): Promise<void> {
+    async deleteWish(wishId: number, ownerId: number): Promise<{ success: true }> {
 
         const wish = await WishModel.findById(wishId)
 
@@ -181,7 +181,9 @@ class WishService {
             throw ApiError.Forbidden()
         }
 
-        return await WishModel.delete(wishId)
+        await WishModel.delete(wishId)
+
+        return { success: true }
     }
 }
 

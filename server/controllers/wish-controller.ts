@@ -106,9 +106,9 @@ class WishController {
                     ApiError.UnauthorizedError()
                 );
             }
-            const wish = await wishService.deleteWish(Number(req.params.id), req.user.id)
+            const result = await wishService.deleteWish(Number(req.params.id), req.user.id)
 
-            res.json(wish)
+            res.json(result)
 
         } catch (e) {
             next(e)

@@ -2,8 +2,8 @@ import { Router } from 'express';
 import { body } from 'express-validator';
 
 import userController from '../controllers/user-controller';
-import uploadWishImage from '../middlewares/upload-wish-image';
 import authMiddleware from '../middlewares/auth-middleware';
+import uploadAvatar from '../middlewares/upload-avatar';
 
 const router = Router();
 
@@ -35,14 +35,14 @@ router.get(
 
 router.post(
     '/uploadAvatar', 
-    uploadWishImage.single('file'), 
+    uploadAvatar.single('file'), 
     userController.uploadAvatar
 );
 
 router.post(
     '/changeAvatar', 
     authMiddleware, 
-    uploadWishImage.single('file'), 
+    uploadAvatar.single('file'), 
     userController.changeAvatar
 );
 

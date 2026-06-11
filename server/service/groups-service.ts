@@ -11,7 +11,6 @@ import type { FriendshipEntity } from '../types/friendship.types';
 
 interface SuccessResponse {
     success: true;
-    message: string;
 }
 
 class GroupsService {
@@ -46,7 +45,7 @@ class GroupsService {
         if (!group) {
             throw ApiError.NotFound('Группа не найдена');
         }
-        console.log(typeof group.owner_user_id, typeof ownerId)
+
         if (group.owner_user_id !== ownerId) {
             throw ApiError.Forbidden();
         }
@@ -84,10 +83,7 @@ class GroupsService {
 
         await GroupsModel.deleteGroup(groupId);
 
-        return {
-            success: true,
-            message: 'Группа удалена'
-        };
+        return { success: true };
     }
 
 
@@ -111,10 +107,7 @@ class GroupsService {
 
         await GroupsModel.addGroupToFriend({groupId, friendshipId: friendship.id});
 
-        return {
-            success: true,
-            message: 'Группа привязана к подписчику'
-        };
+        return { success: true };
     }
 
 
@@ -141,10 +134,7 @@ class GroupsService {
 
         await GroupsModel.removeGroupFromFriend({groupId, friendshipId: friendship.id});
 
-        return {
-            success: true,
-            message: 'Группа отвязана от подписчика'
-        };
+        return { success: true };
     }
 
 
@@ -177,10 +167,7 @@ class GroupsService {
 
         await GroupsModel.addGroupToWishlistItem({groupId, wishId});
 
-        return {
-            success: true,
-            message: 'Группа привязана к желанию'
-        };
+        return { success: true };
     }
 
 
@@ -209,10 +196,7 @@ class GroupsService {
 
         await GroupsModel.removeGroupFromWishlistItem({groupId, wishId});
 
-        return {
-            success: true,
-            message: 'Группа отвязана от желания'
-        };
+        return { success: true };
     }
 }
 

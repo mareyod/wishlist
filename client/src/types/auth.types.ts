@@ -1,5 +1,4 @@
-import type { Request } from 'express';
-import type { UserDtoInterface } from '../types/user.types';
+import type { UserDtoInterface } from "./user.types";
 
 export interface JwtUserPayload {
     readonly id: number;
@@ -8,11 +7,12 @@ export interface JwtUserPayload {
     readonly avatar_url: string | null;
     readonly isActivated: boolean;
 }
+
 export interface AuthResponse {
-    readonly accessToken: string;
-    readonly refreshToken: string;
-    readonly user: UserDtoInterface;
-};
+    accessToken: string;
+    refreshToken: string;
+    user: UserDtoInterface;
+}
 
 export interface TokenPair {
     readonly accessToken: string;
@@ -43,14 +43,11 @@ export interface AvatarUploadResponse {
     readonly path: string;
 }
 
+export interface ChangeAvatarResponse {
+    readonly user: UserDtoInterface;
+    readonly avatar_url: string;
+}
+
 export interface ErrorResponse {
     readonly message: string;
-}
-
-export interface AuthenticatedRequest extends Request {
-    user: JwtUserPayload;
-}
-
-export interface OptionalAuthRequest extends Request {
-    user: JwtUserPayload | null;
 }

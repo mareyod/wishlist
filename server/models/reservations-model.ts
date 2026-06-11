@@ -77,7 +77,7 @@ class ReservationsModel {
       WHERE r.item_id = wi.id
         AND r.reserver_id = $1
         AND wi.owner_user_id = $2
-      RETURNING id
+      RETURNING r.id
       `,
       [reserverId, ownerId]
     )
