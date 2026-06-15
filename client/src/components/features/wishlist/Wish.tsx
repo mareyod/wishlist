@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo } from 'react'
 
 import styles from './Wish.module.css'
 
@@ -11,7 +11,7 @@ const DEFAULT_IMAGE = '/img/WISH_PLACEHOLDER.jpg'
 interface WishProps {
     wish: SanitizedWishItem;
     viewer?: ViewerContext | undefined;
-    onClick: () => void;
+    onClick: (wish: SanitizedWishItem) => void;
     onEdit: (wish: SanitizedWishItem) => void;
     onDelete: (id: number) => void;
     onReserve: (id: number) => void;
@@ -19,7 +19,7 @@ interface WishProps {
 }
 
 
-export default function Wish({
+function Wish({
     wish,
     viewer,
     onClick,
@@ -61,7 +61,7 @@ export default function Wish({
     return (
         <div
             className={styles.card}
-            onClick={onClick}
+            onClick={() => onClick(wish)}
             onMouseLeave={() => {
                 setMenuOpen(false)
             }}
@@ -173,3 +173,5 @@ export default function Wish({
         </div>
     )
 }
+
+export default memo(Wish)

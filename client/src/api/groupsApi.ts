@@ -1,6 +1,6 @@
 import type { FriendshipGroup } from '../types/group.types';
 import type { SuccessResponse } from '../types/api-responses.types';
-import { getAccessToken, handleResponse } from './apiClient'
+import { fetchWithRefresh, getAccessToken, handleResponse } from './apiClient'
 
 const BASE_URL = import.meta.env.VITE_API_URL + '/api/groups'
 
@@ -8,7 +8,7 @@ const BASE_URL = import.meta.env.VITE_API_URL + '/api/groups'
 export const getGroups = async (): Promise<FriendshipGroup[]> => {
     const token = getAccessToken();
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         BASE_URL,
         {
             method: 'GET',
@@ -25,7 +25,7 @@ export const getGroups = async (): Promise<FriendshipGroup[]> => {
 export const createGroup = async (name: string, color: string): Promise<FriendshipGroup> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         BASE_URL,
         {
             method: 'POST',
@@ -43,7 +43,7 @@ export const createGroup = async (name: string, color: string): Promise<Friendsh
 
 export const updateGroup = async (groupId: number, name: string, color: string): Promise<FriendshipGroup> => {
     const token = getAccessToken()
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/${groupId}`,
         {
             method: 'PATCH',
@@ -62,7 +62,7 @@ export const updateGroup = async (groupId: number, name: string, color: string):
 export const deleteGroup = async (groupId: number): Promise<SuccessResponse> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/${groupId}`,
         {
             method: 'DELETE',
@@ -79,7 +79,7 @@ export const deleteGroup = async (groupId: number): Promise<SuccessResponse> => 
 export const addGroupToFriend= async (groupId: number, friendId: number): Promise<SuccessResponse> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/${groupId}/friends/${friendId}`,
         {
             method: 'POST',
@@ -97,7 +97,7 @@ export const addGroupToFriend= async (groupId: number, friendId: number): Promis
 export const removeGroupFromFriend = async (groupId: number, friendId: number): Promise<SuccessResponse> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/${groupId}/friends/${friendId}`,
         {
             method: 'DELETE',
@@ -115,7 +115,7 @@ export const removeGroupFromFriend = async (groupId: number, friendId: number): 
 export const addGroupToWishlistItem = async (groupId: number, wishId: number): Promise<SuccessResponse> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/${groupId}/wishes/${wishId}`,
         {
             method: 'POST',
@@ -132,7 +132,7 @@ export const addGroupToWishlistItem = async (groupId: number, wishId: number): P
 export const removeGroupFromWishlistItem = async (groupId: number, wishId: number): Promise<SuccessResponse> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/${groupId}/wishes/${wishId}`,
         {
             method: 'DELETE',

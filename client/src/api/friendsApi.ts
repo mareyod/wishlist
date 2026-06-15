@@ -1,6 +1,6 @@
 import type { FollowerUser, FollowingUser } from "../types/friendship.types"
 import type { SuccessResponse } from "../types/api-responses.types"
-import { getAccessToken, handleResponse } from './apiClient'
+import { fetchWithRefresh, getAccessToken, handleResponse } from './apiClient'
 
 const BASE_URL = import.meta.env.VITE_API_URL + '/api/friends'
 
@@ -9,7 +9,7 @@ const BASE_URL = import.meta.env.VITE_API_URL + '/api/friends'
 export const getFollowers = async (): Promise<FollowerUser[]>  => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/followers`,
         {
             method: 'GET',
@@ -26,7 +26,7 @@ export const getFollowers = async (): Promise<FollowerUser[]>  => {
 export const getFollowing = async (): Promise<FollowingUser[]> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/following`,
         {
             method: 'GET',
@@ -43,7 +43,7 @@ export const getFollowing = async (): Promise<FollowingUser[]> => {
 export const removeFollower = async (userId: number): Promise<SuccessResponse> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/follower/${userId}`,
         {
             method: 'DELETE',
@@ -59,7 +59,7 @@ export const removeFollower = async (userId: number): Promise<SuccessResponse> =
 export const followUser = async (userId: number): Promise<SuccessResponse> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/following/${userId}`,
         {
             method: 'POST',
@@ -76,7 +76,7 @@ export const followUser = async (userId: number): Promise<SuccessResponse> => {
 export const unfollowUser = async (userId: number): Promise<SuccessResponse> => {
     const token = getAccessToken()
 
-    const res = await fetch(
+    const res = await fetchWithRefresh(
         `${BASE_URL}/following/${userId}`,
         {
             method: 'DELETE',

@@ -1,6 +1,6 @@
-import type { AuthResponse, LoginBody, RegistrationBody, AvatarUploadResponse, ChangeAvatarResponse } from "@/types/auth.types";
+import type { AuthResponse, LoginBody, RegistrationBody, AvatarUploadResponse, ChangeAvatarResponse } from "../types/auth.types";
 
-import { setAccessToken, getAccessToken, handleResponse } from './apiClient'
+import { setAccessToken, getAccessToken, handleResponse, fetchWithRefresh } from './apiClient'
 
 const BASE_URL = import.meta.env.VITE_API_URL+"/api/auth";
 
@@ -66,7 +66,7 @@ export const changeAvatar = async (file: File): Promise<ChangeAvatarResponse> =>
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await fetch(BASE_URL+'/changeAvatar', {
+  const res = await fetchWithRefresh(BASE_URL+'/changeAvatar', {
     method: 'POST',
     headers: {
         Authorization: token ? `Bearer ${token}` : ''

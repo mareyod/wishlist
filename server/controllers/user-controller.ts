@@ -92,21 +92,21 @@ class UserController{
     }
 
     async changeAvatar(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-        if (!req.user) {
-            return next(ApiError.UnauthorizedError(),);
+        try {
+            if (!req.user) {
+                return next(ApiError.UnauthorizedError(),);
+            }
+
+            const userId = req.user.id;
+            const file = req.file;
+
+            const data = await userService.changeAvatar(userId, file);
+
+            res.json(data);
+        } catch (e) {
+            next(e);
         }
-
-        const userId = req.user.id;
-        const file = req.file;
-
-        const data = await userService.changeAvatar(userId, file);
-
-        res.json(data);
-    } catch (e) {
-        next(e);
     }
-}
 
 }
 

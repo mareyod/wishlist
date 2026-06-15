@@ -8,7 +8,7 @@ import {
     uploadAvatar as uploadAvatarApi,
     changeAvatar as changeAvatarApi 
 } from "../../api/authApi";
-import { setAccessToken, getAccessToken } from '../../api/apiClient'
+import { setAccessToken, getAccessToken, setOnUnauthorized } from '../../api/apiClient'
 
 import type { UserDtoInterface } from "../../types/user.types";
 import type { LoginBody, RegistrationBody, AuthResponse } from "../../types/auth.types";
@@ -45,9 +45,16 @@ export function AuthProvider({ children }: AuthProviderProps){
     }, [])
 
     useEffect(() => {
+        setOnUnauthorized(() => {
+            setUser(null)
+            setAccessToken(null)
+        })
         if (initialized.current) return;
         initialized.current = true;
         init();
+
+        return () => setOnUnauthorized(null)
+
     }, [init]);
 
     const login = async (payload: LoginBody): Promise<AuthResponse> => {
@@ -88,7 +95,6 @@ export function AuthProvider({ children }: AuthProviderProps){
         <AuthContext.Provider
         value={{
             user,
-            accessToken: getAccessToken(),
             isLoading,
             isAuthenticated,
             login,

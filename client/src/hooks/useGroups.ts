@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react'
-
+import { useState } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createGroup, deleteGroup, getGroups, updateGroup } from '../api/groupsApi'
 
 import type { FriendshipGroup } from '../types/group.types';
@@ -16,76 +16,68 @@ export interface UseGroupsResult {
 }
 
 export default function useGroups(enabled = true): UseGroupsResult {
+    const queryClient = useQueryClient()
+    const queryKey = ['groups']
 
-    const [groups, setGroups] = useState<FriendshipGroup[]>([])
-    const [loading, setLoading] = useState<boolean>(false)
-    const [error, setError] = useState<string | null>(null)
     const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null)
 
-    const refreshGroups = useCallback(async (): Promise<void>  => {
-	    if (!enabled) return
-        try {	
-            setLoading(true)
-            const data = await getGroups()
-            setGroups(data)
-            setError(null)
-        } catch (e) {
-            setError(e instanceof Error ? e.message : 'Ошибка загрузки групп')
-        } finally {
-            setLoading(false)
-        }
-    }, [enabled])
+    const {
+        data: groups,
+        isLoading,
+        error: queryError
+    } = useQuery({
+        queryKey,
+        queryFn: getGroups,
+        enabled,
+    })
 
-    useEffect(() => {
-        void refreshGroups()
-    }, [refreshGroups])
+    const invalidateGroups = (): Promise<void> => {
+        return queryClient.invalidateQueries({ queryKey })
+    }
+ 
+    const createMutation = useMutation({
+        mutationFn: ({ name, color }: { name: string; color: string }) => createGroup(name, color),
+        onSuccess: invalidateGroups,
+    })
+ 
+    const deleteMutation = useMutation({
+        mutationFn: (groupId: number) => deleteGroup(groupId),
+        onSuccess: invalidateGroups,
+    })
+ 
+    const editMutation = useMutation({
+        mutationFn: ({ groupId, name, color }: { groupId: number; name: string; color: string }) => updateGroup(groupId, name, color),
+        onSuccess: invalidateGroups,
+    })
 
     const handleCreateGroup = async (name: string, color: string): Promise<void> => {
-        try {
-            await createGroup(name, color)
-            await refreshGroups()
-        } catch (e) {
-            console.error('Не удалось создать группу:', e)
-            setError(e instanceof Error ? e.message : 'Ошибка создания группы')
-        }
+        await createMutation.mutateAsync({ name, color })
     }
 
     const handleDeleteGroup = async (groupId: number): Promise<void> => {
-        try {
-            await deleteGroup(groupId)
-            if (selectedGroupId === groupId) {
-                setSelectedGroupId(null)
-            }
-            await refreshGroups()
-        } catch (e) {
-            console.error('Не удалось удалить группу:', e)
-            setError(e instanceof Error ? e.message : 'Ошибка удаления группы')
-
-
+        if (selectedGroupId === groupId) {
+            setSelectedGroupId(null)
         }
+        await deleteMutation.mutateAsync(groupId)
     }
 
     const handleEditGroup = async (groupId: number, name: string, color: string) => {
-        try {
-            await updateGroup(groupId, name, color)
-            await refreshGroups()
-        } catch (e) {
-            console.error('Не удалось изменить группу:', e)
-            setError(e instanceof Error ? e.message : 'Ошибка обновления группы')
-        }
+        await editMutation.mutateAsync({ groupId, name, color })
     }
 
-
+    const error =
+        queryError instanceof Error ? queryError.message :
+        createMutation.error instanceof Error ? createMutation.error.message :
+        deleteMutation.error instanceof Error ? deleteMutation.error.message :
+        editMutation.error instanceof Error ? editMutation.error.message :
+        null
 
     return {
-        groups,
-
-        loading,
+        groups: groups ?? [],
+        loading: isLoading,
         error,
-
         selectedGroupId,
         setSelectedGroupId,
-
         handleCreateGroup,
         handleDeleteGroup,
         handleEditGroup

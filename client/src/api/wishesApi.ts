@@ -1,6 +1,6 @@
-import type { WishFormValues } from "@/types/wish.types"
+import type { WishFormValues } from "../types/wish.types"
 import type { WishlistResponse, CreateWishResponse, UpdateWishResponse, DeleteWishResponse } from '../types/api-responses.types';
-import { getAccessToken, handleResponse } from './apiClient'
+import { fetchWithRefresh, getAccessToken, handleResponse } from './apiClient'
 
 const BASE_URL = import.meta.env.VITE_API_URL + '/api/wishes'
 
@@ -8,7 +8,7 @@ const BASE_URL = import.meta.env.VITE_API_URL + '/api/wishes'
 export const getWishlist = async (nickname: string): Promise<WishlistResponse> => {
   const token = getAccessToken()
   
-  const res = await fetch(`${BASE_URL}/${nickname}`, {
+  const res = await fetchWithRefresh(`${BASE_URL}/${nickname}`, {
     headers: {
          Authorization: token ? `Bearer ${token}` : ''
     },
@@ -21,7 +21,7 @@ export const getWishlist = async (nickname: string): Promise<WishlistResponse> =
 
 export const createWish = async (wish: WishFormValues): Promise<CreateWishResponse>  => {
   const token = getAccessToken()
-  const res = await fetch(BASE_URL, {
+  const res = await fetchWithRefresh(BASE_URL, {
     headers: {
          Authorization: token ? `Bearer ${token}` : ''
     },
@@ -35,7 +35,7 @@ export const createWish = async (wish: WishFormValues): Promise<CreateWishRespon
 
 export const updateWish = async (id: number, wish: WishFormValues): Promise<UpdateWishResponse> => {
   const token = getAccessToken()
-  const res = await fetch(
+  const res = await fetchWithRefresh(
     `${BASE_URL}/${id}`,
     {
       headers: {
@@ -53,7 +53,7 @@ export const updateWish = async (id: number, wish: WishFormValues): Promise<Upda
 export const deleteWish = async (id: number): Promise<DeleteWishResponse> => {
   const token = getAccessToken()
   
-  const res = await fetch(
+  const res = await fetchWithRefresh(
     `${BASE_URL}/${id}`,
     {
       headers: {

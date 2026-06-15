@@ -3,7 +3,6 @@ import type { AuthResponse, LoginBody, RegistrationBody, AvatarUploadResponse, C
 
 export interface AuthContextValue {
     readonly user: UserDtoInterface | null;
-    readonly accessToken: string | null;
     readonly isLoading: boolean;
     readonly isAuthenticated: boolean;
     readonly login: (payload: LoginBody) => Promise<AuthResponse>;

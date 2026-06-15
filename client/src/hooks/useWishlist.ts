@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { getWishlist, createWish, updateWish, deleteWish } from '../api/wishesApi'
 import { reserveWish, unreserveWish } from '../api/reservationsApi'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import type { GetWishesResult, WishFormValues } from '../types/wish.types';
 
@@ -17,84 +18,90 @@ interface UseWishlistResult {
 }
 export default function useWishlist(nickname: string, userId: number | null): UseWishlistResult {
 
-    const [wishlist, setWishlist] = useState<GetWishesResult | null>(null)
-    const [loading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState<string | null>(null)
+    const queryClient = useQueryClient()
+
+    const queryKey = ['wishlist', nickname, userId]
+
+    const {
+        data: wishlist,
+        isLoading,
+        error: queryError,
+        refetch,
+    } = useQuery({
+        queryKey,
+        queryFn: () => getWishlist(nickname),
+        enabled: !!nickname,
+    })
+
+    const invalidateWishlist = (): Promise<void> => {
+        return queryClient.invalidateQueries({ queryKey })
+    }
+
+    const createMutation = useMutation({
+        mutationFn: (formData: WishFormValues) => createWish(formData),
+        onSuccess: invalidateWishlist
+    })
+ 
+    const updateMutation = useMutation({
+        mutationFn: ({ id, formData }: { id: number; formData: WishFormValues }) =>
+            updateWish(id, formData),
+        onSuccess: invalidateWishlist
+    })
+ 
+    const deleteMutation = useMutation({
+        mutationFn: (id: number) => deleteWish(id),
+        onSuccess: invalidateWishlist
+    })
+ 
+    const reserveMutation = useMutation({
+        mutationFn: (wishId: number) => reserveWish(wishId),
+        onSuccess: invalidateWishlist
+    })
+ 
+    const unreserveMutation = useMutation({
+        mutationFn: (wishId: number) => unreserveWish(wishId),
+        onSuccess: invalidateWishlist
+    })
+
+
+    const handleCreateWish = useCallback(async (formData: WishFormValues): Promise<void> => {
+        await createMutation.mutateAsync(formData)
+    }, [createMutation])
+
+
+    const handleUpdateWish = useCallback(async (id: number, formData: WishFormValues): Promise<void> => {
+        await updateMutation.mutateAsync({ id, formData })
+
+    }, [updateMutation])
+
+    const handleDeleteWish = useCallback(async (id: number): Promise<void> => {
+        await deleteMutation.mutateAsync(id)
+    }, [deleteMutation])
+
+    const handleReserve = useCallback(async (wishId: number): Promise<void> => {
+        await reserveMutation.mutateAsync(wishId)
+    }, [reserveMutation])
+
+    const handleUnreserve = useCallback(async (wishId: number): Promise<void> => {
+        await unreserveMutation.mutateAsync(wishId)
+    }, [unreserveMutation])
 
     const refreshWishlist = useCallback(async (): Promise<void> => {
-        try {
-            setLoading(true)
-            const data: GetWishesResult = await getWishlist(nickname)
-            setWishlist(data)
-            setError(null)
-        } catch (e) {
-            setError(e instanceof Error ? e.message: 'Ошибка загрузки вишлиста');
-        } finally {
-            setLoading(false)
-        }
-    }, [nickname, userId])
+        await refetch()
+    }, [refetch])
 
-    useEffect(() => {
-        void refreshWishlist()
-    }, [refreshWishlist])
-
-
-    const handleCreateWish = async (formData: WishFormValues): Promise<void> => {
-        try {
-            await createWish(formData)
-            await refreshWishlist()
-        } catch (e) {
-            console.error('Не удалось создать желание:', e)
-            setError(e instanceof Error ? e.message : 'Ошибка создания желания');
-        }
-    }
-
-
-    const handleUpdateWish = async (id: number, formData: WishFormValues): Promise<void> => {
-        try {
-            await updateWish(id, formData)
-            await refreshWishlist()
-        } catch (e) {
-            console.error('Не удалось обновить желание:', e)
-            setError(e instanceof Error ? e.message : 'Ошибка обновления желания');
-        }
-
-    }
-
-    const handleDeleteWish = async (id: number): Promise<void> => {
-        try {
-            await deleteWish(id)
-            await refreshWishlist()
-        } catch (e) {
-            console.error('Не удалось удалить желание:', e)
-            setError(e instanceof Error ? e.message : 'Ошибка удаления желания');
-        }
-    }
-
-    const handleReserve = async (wishId: number): Promise<void> => {
-        try {
-            await reserveWish(wishId)
-            await refreshWishlist()
-
-        } catch (e) {
-            console.error('Не удалось забронировать желание:', e)
-            setError(e instanceof Error ? e.message : 'Ошибка бронирования');
-        }
-    }
-
-    const handleUnreserve = async (wishId: number): Promise<void> => {
-        try {
-            await unreserveWish(wishId)
-            await refreshWishlist()
-        } catch (e) {
-            console.error('Не удалось отменить бронирование желания:', e)
-            setError(e instanceof Error ? e.message : 'Ошибка снятия брони');
-        }
-    }
+    const error =
+        queryError instanceof Error ? queryError.message :
+        createMutation.error instanceof Error ? createMutation.error.message :
+        updateMutation.error instanceof Error ? updateMutation.error.message :
+        deleteMutation.error instanceof Error ? deleteMutation.error.message :
+        reserveMutation.error instanceof Error ? reserveMutation.error.message :
+        unreserveMutation.error instanceof Error ? unreserveMutation.error.message :
+        null
 
     return {
-        wishlist,
-        loading,
+        wishlist: wishlist ?? null,
+        loading: isLoading,
         error,
         refreshWishlist,
         handleCreateWish,

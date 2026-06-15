@@ -3,7 +3,6 @@ import styles from './WishlistGrid.module.css'
 
 import type { SanitizedWishItem } from '../../../types/wish.types'
 import type { ViewerContext } from '../../../types/friendship.types'
-import type { UserDtoInterface } from '../../../types/user.types'
 
 interface WishlistGridProps {
   items: SanitizedWishItem[];
@@ -31,7 +30,7 @@ export default function WishlistGrid({
             key={item.id}
             wish={item}
             viewer={viewer}
-            onClick={() => onClick(item)}
+            onClick={onClick}
             onEdit={onEdit}
             onDelete={onDelete}
             onReserve={onReserve}
